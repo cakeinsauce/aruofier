@@ -9,7 +9,7 @@ from ctypes import POINTER, cast
 import bs4
 import cloudscraper
 import playsound
-from comtypes import CLSCTX_ALL
+from comtypes import CLSCTX_ALL, CoInitialize
 from dotenv import load_dotenv
 from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
 
@@ -85,6 +85,7 @@ def background_task() -> None:
     print("Starting Aruodas scrapper...")
     threading.Thread(target=waiting_animation).start()
     cache: list[str] = []
+    CoInitialize()
 
     while True:
         links = get_ad_links(get_page_ads(get_page_content(ADS_URL)))
