@@ -1,0 +1,5 @@
+beautifulsoup4==4.11.1
+cloudscraper==1.2.60
+playsound==1.2.2
+pycaw==20220416
+python-dotenv==0.20.0
