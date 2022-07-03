@@ -26,4 +26,4 @@ Change .env file in the root directory to set up the scrapper
 |---|---------------|
 |`float` <br/> `default: 0.7` <br/> NOTIFICATION_VOL | How loud sound notification would be. From 0 to 1 |
 |`int` <br/> `default: 60` <br/> UPDATE_TIME | Refresh rate in seconds. Try to keep it not too low so cloudflare won't block you |
-|`int` <br/> `default: 5` <br/> ADS_URL | URL from aruodas with desired filters |
+|`str` <br/> ADS_URL | URL from aruodas with desired filters |
