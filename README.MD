@@ -18,6 +18,10 @@ $ python -m pip install -r requirements.txt
 $ python main.py
 ```
 
+## Example
+
+![img](https://user-images.githubusercontent.com/29804728/177042035-cf80a08f-10f9-4167-8c41-0820f7329bbd.png)
+
 ## Settings
 
 Change .env file in the root directory to set up the scrapper
