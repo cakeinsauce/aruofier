@@ -75,7 +75,7 @@ def get_ad_links(adverts: list[bs4.Tag]) -> list[str]:
     for advert in adverts:
         try:
             link = advert.td.div.a["href"]
-        except TypeError:
+        except (TypeError, AttributeError):
             continue
         links.append(link)
     return links
