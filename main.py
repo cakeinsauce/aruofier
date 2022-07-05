@@ -1,7 +1,6 @@
 import os
 import pathlib
 import random
-import sys
 import threading
 import time
 from ctypes import POINTER, cast
@@ -47,16 +46,6 @@ def notify(message: object) -> None:
     play_random_sound(NOTIFICATION_VOL)
 
 
-def waiting_animation() -> None:
-    animation = "|/-\\"
-    idx = 0
-    while True:
-        time.sleep(0.23)
-        sys.stdout.write(f"\r{animation[idx % len(animation)]}")
-        sys.stdout.flush()
-        idx += 1
-
-
 def get_page_content(url: str) -> str:
     resp = scraper.get(url=url)
     resp.raise_for_status()
@@ -81,12 +70,9 @@ def get_ad_links(adverts: list[bs4.Tag]) -> list[str]:
     return links
 
 
-def background_task() -> None:
-    print("Starting Aruodas scrapper...")
-    threading.Thread(target=waiting_animation).start()
-    cache: list[str] = []
+def main() -> None:
     CoInitialize()
-
+    cache: list[str] = []
     while True:
         links = get_ad_links(get_page_ads(get_page_content(ADS_URL)))
         new_links = tuple(
@@ -101,4 +87,12 @@ def background_task() -> None:
 
 
 if __name__ == "__main__":
-    threading.Thread(target=background_task).start()
+    print("Running Aruodas scrapper...")
+    threading.Thread(target=main).start()
+
+    try:
+        while True:
+            time.sleep(0.1)
+    except KeyboardInterrupt:
+        print("Exiting programm...")
+        os._exit(0)
