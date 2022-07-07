@@ -1,3 +1,4 @@
+import datetime
 import os
 import pathlib
 import random
@@ -40,10 +41,9 @@ def play_random_sound(volume: float | None = None) -> None:
     interface.SetMasterVolumeLevelScalar(previous_volume, None)  # type: ignore
 
 
-def notify(message: object) -> None:
-    print("New ads!")
-    print(message)
-    play_random_sound(NOTIFICATION_VOL)
+def print_notification(message: object) -> None:
+    now = datetime.datetime.now().strftime("%H:%M:%S")
+    print(f"[{now}] New ads!\n{message}")
 
 
 def get_page_content(url: str) -> str:
@@ -80,7 +80,9 @@ def main() -> None:
         )
 
         if cache and new_links:
-            notify("\n".join(new_links))
+            print_notification("\n".join(new_links))
+            play_random_sound(NOTIFICATION_VOL)
+
         cache = links
 
         time.sleep(UPDATE_TIME)
