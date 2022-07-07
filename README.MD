@@ -20,7 +20,7 @@ $ python main.py
 
 ## Example
 
-![img](https://user-images.githubusercontent.com/29804728/177042035-cf80a08f-10f9-4167-8c41-0820f7329bbd.png)
+![img](https://user-images.githubusercontent.com/29804728/177861019-d10588c5-82e9-4cca-bde2-6df8b7ede501.png)
 
 ## Settings
 
