@@ -43,7 +43,8 @@ def play_random_sound(volume: float | None = None) -> None:
 
 def print_notification(message: object) -> None:
     now = datetime.datetime.now().strftime("%H:%M:%S")
-    print(f"[{now}] New ads!\n{message}")
+    print("\033[92m", f"[{now}]", end="", sep="")
+    print("\u001b[0m", f"New ads!\n{message}")
 
 
 def get_page_content(url: str) -> str:
