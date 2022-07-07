@@ -1,22 +1,23 @@
+import ctypes
 import datetime
 import os
 import pathlib
 import random
+import shutil
 import threading
 import time
-from ctypes import POINTER, cast
 
 import bs4
 import cloudscraper
+import comtypes
+import dotenv
 import playsound
-from comtypes import CLSCTX_ALL, CoInitialize
-from dotenv import load_dotenv
 from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
 
 SOUNDS_DIR = pathlib.Path(__file__).parent.resolve() / "sounds"
 SOUND_PATHS = tuple(map(str, SOUNDS_DIR.glob("**/*")))
 
-load_dotenv()
+dotenv.load_dotenv()
 
 NOTIFICATION_VOL = float(os.getenv("NOTIFICATION_VOL", "0.7"))
 UPDATE_TIME = int(os.getenv("UPDATE_TIME", "60"))
@@ -26,11 +27,11 @@ scraper = cloudscraper.create_scraper(browser={"custom": "ScraperBot/1.0"})
 
 
 def play_random_sound(volume: float | None = None) -> None:
-    interface = cast(
+    interface = ctypes.cast(
         AudioUtilities.GetSpeakers().Activate(
-            IAudioEndpointVolume._iid_, CLSCTX_ALL, None
+            IAudioEndpointVolume._iid_, comtypes.CLSCTX_ALL, None
         ),
-        POINTER(IAudioEndpointVolume),
+        ctypes.POINTER(IAudioEndpointVolume),
     )
     previous_volume = interface.GetMasterVolumeLevelScalar()  # type: ignore
     if volume is not None:
@@ -43,8 +44,11 @@ def play_random_sound(volume: float | None = None) -> None:
 
 def print_notification(message: object) -> None:
     now = datetime.datetime.now().strftime("%H:%M:%S")
+    terminal_width = shutil.get_terminal_size().columns
     print("\033[92m", f"[{now}]", end="", sep="")
-    print("\u001b[0m", f"New ads!\n{message}")
+    print("\u001b[36m", "New ads!")
+    print("\u001b[0m", message, sep="")
+    print("\u001b[31;1m", "─" * (terminal_width - 1), "\u001b[0m", sep="")
 
 
 def get_page_content(url: str) -> str:
@@ -72,7 +76,7 @@ def get_ad_links(adverts: list[bs4.Tag]) -> list[str]:
 
 
 def main() -> None:
-    CoInitialize()
+    comtypes.CoInitialize()
     cache: list[str] = []
     while True:
         links = get_ad_links(get_page_ads(get_page_content(ADS_URL)))
@@ -81,7 +85,7 @@ def main() -> None:
         )
 
         if cache and new_links:
-            print_notification("\n".join(new_links))
+            print_notification("• " + "\n• ".join(new_links))
             play_random_sound(NOTIFICATION_VOL)
 
         cache = links
